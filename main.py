@@ -50,13 +50,10 @@ def draw_dados(frame):
         stats,
         _,
     ) = cv2.connectedComponentsWithStats(mask, cv2.CV_32S, connectivity=8)
-    print(componentes_conectadas_dados)
     if(componentes_conectadas_dados != 6 ):
       return;
 
     for i in range(1, componentes_conectadas_dados):
-     
-
       mascara = np.uint8(etiquetas_dados == i)
       dado = cv2.bitwise_and(img_gray, img_gray, mask=mascara)
       _, puntos_blancos = cv2.threshold(dado, 190, 255, cv2.THRESH_BINARY)
@@ -109,6 +106,7 @@ def main(path):
       out.write(frame)
       prev_frame = current_frame
       ret, current_frame = cap.read()
+  print(f'Se creo el video {path}.mp4')
 
   # Fin
   cap.release()
@@ -118,5 +116,5 @@ def main(path):
 
 
 if __name__ == "__main__":
-    assert len(sys.argv) > 1, "INGRESE EL ARCHIVO!"
+    assert len(sys.argv) > 1, "INGRESE EL ARCHIVO COMO PARAMETRO!"
     main(sys.argv[-1])
