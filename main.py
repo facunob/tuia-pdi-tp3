@@ -50,16 +50,12 @@ def draw_dados(frame):
         stats,
         _,
     ) = cv2.connectedComponentsWithStats(mask, cv2.CV_32S, connectivity=8)
-
-    if(componentes_conectadas_dados < 5):
+    print(componentes_conectadas_dados)
+    if(componentes_conectadas_dados != 6 ):
       return;
 
     for i in range(1, componentes_conectadas_dados):
-      x = stats[i, cv2.CC_STAT_LEFT]
-      y = stats[i, cv2.CC_STAT_TOP]
-      w = stats[i, cv2.CC_STAT_WIDTH]
-      h = stats[i, cv2.CC_STAT_HEIGHT]
-      cv2.rectangle(frame, (x, y), (x+w,y+h), 150, 1)
+     
 
       mascara = np.uint8(etiquetas_dados == i)
       dado = cv2.bitwise_and(img_gray, img_gray, mask=mascara)
@@ -73,7 +69,14 @@ def draw_dados(frame):
         area = estadisticas[j, cv2.CC_STAT_AREA]
         if area > 10:
           count_puntos +=1
-
+      if (count_puntos == 0):
+        return;
+    
+      x = stats[i, cv2.CC_STAT_LEFT]
+      y = stats[i, cv2.CC_STAT_TOP]
+      w = stats[i, cv2.CC_STAT_WIDTH]
+      h = stats[i, cv2.CC_STAT_HEIGHT]
+      cv2.rectangle(frame, (x, y), (x+w,y+h), 150, 1)
       draw_number(frame, (x+w, y+h), count_puntos)
 
 
